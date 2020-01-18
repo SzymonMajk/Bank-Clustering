@@ -38,5 +38,6 @@ if cluster:
 	results = core.get_results(xaxis, yaxis)
 
 	#plot data with seaborn
-	facet = sns.lmplot(data=results, x='x', y='y', hue='label', fit_reg=False, legend=True, legend_out=True)
+	ax = sns.lmplot(data=results, x='x', y='y', hue='label', fit_reg=False, legend=True, legend_out=True)
+	ax.set(xlabel=xaxis, ylabel=yaxis)
 	st.pyplot()

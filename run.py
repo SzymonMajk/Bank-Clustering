@@ -7,7 +7,7 @@ from argparse import ArgumentParser
 from core.app import Core
 
 
-methods = ('kmeans', 'rforest', 'dtree')
+methods = ('KMeans', 'DBSCAN', 'AFF')
 features = ('age', 'job', 'martial', 'education', 'default', 'balance', 'housing', 'loan', 'duration')
 plt.rc('font', size=16)
 

@@ -1,30 +1,28 @@
 import pandas as pd
-import numpy as np
-
+from sklearn.cluster import KMeans, DBSCAN, AffinityPropagation
 
 class Core:
 
     def cluster(self, method):
-        pass
+
+        data = pd.read_csv("../data/bank-full.csv")
+
+        if method == "KMeans":
+            model = KMeans(n_clusters=3)
+        else if method == "DBSCAN":
+            model = DBSCAN()
+        else method == "AFF":
+            model = AffinityPropagation(n_cluster=3)
+
+        predictions = model.fit_predict(data)
+        data["pred"] = predictions.tolist()
 
     def get_results(self, xaxis, yaxis):
 
-        #number of points per group
-        n = 50
+        data_to_present = pd.DataFrame(index=range(n*len(groups)), columns=['x','y','label'])
 
-        #define group labels and their centers
-        groups = {'A': (2,2),
-            'B': (3,4),
-            'C': (4,4),
-            'D': (4,1)}
+        data_to_present["x"] = data[xaxis]
+        data_to_present["y"] = data[yaxis]
+        data_to_present["label"] = data[pred]
 
-        #create labeled x and y data
-        data = pd.DataFrame(index=range(n*len(groups)), columns=['x','y','label'])
-        for i, group in enumerate(groups.keys()):
-            #randomly select n datapoints from a gaussian distrbution
-            data.loc[i*n:((i+1)*n)-1,['x','y']] = np.random.normal(groups[group], 
-                                                           [0.5,0.5], 
-                                                           [n,2])
-            #add group labels
-            data.loc[i*n:((i+1)*n)-1,['label']] = group
-        return data
+        return data_to_present

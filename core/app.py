@@ -1,11 +1,8 @@
 class Core:
 
-	def clean_data():
-		pass
-
-	def cluster():
+	def cluster(method):
 		pass
 
 	"""Desired format: array of tuples"""
-	def get_results():
+	def get_results(xaxis, yaxis):
 		pass

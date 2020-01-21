@@ -23,12 +23,12 @@ class Core:
             model = KMeans(n_clusters=3)
             predictions = model.fit_predict(data)
         elif method == "DBSCAN":
-            predictions = self.dbscan()
+            predictions = self.dbscan(data)
         elif method == "AFF":
-            model = AffinityPropagation(n_cluster=3)
+            model = AffinityPropagation(preference=-3000, max_iter=25)
             predictions = model.fit_predict(data)
         elif method == "AGLOCLUST":
-            predictions = self.agloclust()
+            predictions = self.agloclust(data)
 
         data[self.pred] = predictions.tolist()
         self.data = data
@@ -41,14 +41,14 @@ class Core:
 
         return data_to_present
 
-    def dbscan(self):
-        df_clus = StandardScaler().fit_transform(self.data)
-        model = DBSCAN(eps=0.5, min_samples=2).fit(df_clus)
+    def dbscan(self,data):
+        df_clus = StandardScaler().fit_transform(data)
+        model = DBSCAN(eps=3.2, min_samples=15).fit(df_clus)
         predictions = model.labels_
         return predictions
 
-    def agloclust(self):
-        df_clus = StandardScaler().fit_transform(self.data)
+    def agloclust(self,data):
+        df_clus = StandardScaler().fit_transform(data)
         model = AgglomerativeClustering(n_clusters=3, affinity='euclidean', linkage='ward').fit(df_clus)
-        prediction = model.labels_
+        predictions = model.labels_
         return predictions

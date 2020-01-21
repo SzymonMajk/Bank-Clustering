@@ -8,7 +8,7 @@ from core.app import Core
 
 
 methods = ('KMeans', 'DBSCAN', 'AFF', 'AGLOCLUST')
-features = ('age', 'job', 'education', 'default', 'balance', 'housing', 'loan')
+features = ('age', 'job', 'education', 'marital', 'default', 'balance', 'housing', 'loan')
 plt.rc('font', size=16)
 
 #set style of plots

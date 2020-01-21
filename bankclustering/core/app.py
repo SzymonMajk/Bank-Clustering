@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.cluster import KMeans, DBSCAN, AffinityPropagation, AgglomerativeClustering
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, normalize
 
 
 class Core:
@@ -18,17 +18,18 @@ class Core:
 
     def cluster(self, method):
         data = pd.read_csv("data/bank-processed.csv")
+        normalized = normalize(data, axis=0, norm='max')
 
         if method == "KMeans":
             model = KMeans(n_clusters=3)
-            predictions = model.fit_predict(data)
+            predictions = model.fit_predict(normalized)
         elif method == "DBSCAN":
-            predictions = self.dbscan(data)
+            predictions = self.dbscan(normalized)
         elif method == "AFF":
             model = AffinityPropagation(preference=-3000, max_iter=25)
             predictions = model.fit_predict(data)
         elif method == "AGLOCLUST":
-            predictions = self.agloclust(data)
+            predictions = self.agloclust(normalized)
 
         data[self.pred] = predictions.tolist()
         self.data = data

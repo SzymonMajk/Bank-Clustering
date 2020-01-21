@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.cluster import KMeans, DBSCAN, AffinityPropagation
+from sklearn.preprocessing import StandardScaler
 
 
 class Core:
@@ -13,12 +14,15 @@ class Core:
 
         if method == "KMeans":
             model = KMeans(n_clusters=3)
+            predictions = model.fit_predict(data)
         elif method == "DBSCAN":
-            model = DBSCAN()
+            predictions = dbscan() 
         elif method == "AFF":
             model = AffinityPropagation(n_cluster=3)
+            predictions = model.fit_predict(data)
+        elif method == "AGLOCLUST":
+            predictions = agloclust()
 
-        predictions = model.fit_predict(data)
         data[self.pred] = predictions.tolist()
         self.data = data
 
@@ -29,3 +33,15 @@ class Core:
         data_to_present["label"] = self.data[self.pred]
 
         return data_to_present
+
+    def dbscan():
+        df_clus = StandardScaler().fit_transform(data)
+        model = DBSCAN(eps=0.5, min_samples=2).fit(df_clus)
+        predictions = model.labels_
+        return predictions
+
+    def agloclust():
+        df_clus = StandardScaler().fit_transform(data)
+        model = AgglomerativeClustering(n_clusters=3, affinity='euclidean', linkage='ward').fit(df_clus)
+        prediction = model.labels_
+        return predictions

@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.cluster import KMeans, DBSCAN, AffinityPropagation
+from sklearn.cluster import KMeans, DBSCAN, AffinityPropagation, AgglomerativeClustering
 from sklearn.preprocessing import StandardScaler
 
 
@@ -9,6 +9,13 @@ class Core:
         self.data = None
         self.pred = "pred"
 
+    def agglomerativeclustering(self):
+        model = AgglomerativeClustering(n_clusters=3, affinity='euclidean', linkage='ward')
+        sample_data = self.data[:4000]
+        predictions = model.fit_predict(sample_data)
+        sample_data['classes'] = predictions.tolist()
+        return predictions
+
     def cluster(self, method):
         data = pd.read_csv("data/bank-processed.csv")
 
@@ -16,12 +23,12 @@ class Core:
             model = KMeans(n_clusters=3)
             predictions = model.fit_predict(data)
         elif method == "DBSCAN":
-            predictions = dbscan() 
+            predictions = self.dbscan()
         elif method == "AFF":
             model = AffinityPropagation(n_cluster=3)
             predictions = model.fit_predict(data)
         elif method == "AGLOCLUST":
-            predictions = agloclust()
+            predictions = self.agloclust()
 
         data[self.pred] = predictions.tolist()
         self.data = data
@@ -34,14 +41,14 @@ class Core:
 
         return data_to_present
 
-    def dbscan():
-        df_clus = StandardScaler().fit_transform(data)
+    def dbscan(self):
+        df_clus = StandardScaler().fit_transform(self.data)
         model = DBSCAN(eps=0.5, min_samples=2).fit(df_clus)
         predictions = model.labels_
         return predictions
 
-    def agloclust():
-        df_clus = StandardScaler().fit_transform(data)
+    def agloclust(self):
+        df_clus = StandardScaler().fit_transform(self.data)
         model = AgglomerativeClustering(n_clusters=3, affinity='euclidean', linkage='ward').fit(df_clus)
         prediction = model.labels_
         return predictions
